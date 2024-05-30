@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+      
+      table {
+        width: 100%;
+        text-align: center;
+       color: white;
+    }
+    th{
+        color: white;
+        background-color: #a3c !important;
+    }
+   
+    #modal{
+        background-color: #a3c !important;
+        border: none;
+    }
+  
+   
+
+    .action>button{
+        padding: 10px 20px;
+        background-color: #000;
+        border: 2px solid #a3c ;
+        color: white;
+        transition: 0.5s;
+        margin: 5px ;
+      }
+    .action>button:hover{
+        background-color: #a3c !important;
+      }
+
+      
+      section{
+        background: #00000066;
+        padding: 10px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+      }
+
+      .modal-content{
+        background-color: #d4418e;
+background-image: linear-gradient(315deg,#0652c5 0%, #d4418e 74%);
+      }
+
+
+
+      /*   btn hover */
+
+      .draw-border {
+  box-shadow: inset 0 0 0 4px #a3c;
+  color: #a3c;
+  transition: color 0.25s 0.0833333333s;
+  position: relative;
+}
+.draw-border::before, .draw-border::after {
+  border: 0 solid transparent;
+  box-sizing: border-box;
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  width: 0;
+  height: 0;
+  bottom: 0;
+  right: 0;
+}
+.draw-border::before {
+  border-bottom-width: 4px;
+  border-left-width: 4px;
+}
+.draw-border::after {
+  border-top-width: 4px;
+  border-right-width: 4px;
+}
+.draw-border:hover {
+  color: #fff;
+  scale: 1.1;
+  box-shadow: 2px 2px 20px black;
+}
+.draw-border:hover::before, .draw-border:hover::after {
+  border-color: #fff;
+  border-radius: 10%;
+  transition: border-color 0s, width 0.25s, height 0.25s;
+  width: 100%;
+  height: 100%;
+}
+.draw-border:hover::before {
+  transition-delay: 0s, 0s, 0.25s;
+}
+.draw-border:hover::after {
+  transition-delay: 0s, 0.25s, 0s;
+}
+
+#Hover {
+  background: none;
+  border: none;
+  cursor: pointer;
+  line-height: 1.5;
+  font: 700 1.2rem "Roboto Slab", sans-serif;
+  letter-spacing: 0.05rem;
+}
+
+
+
+ html,
+body {
+
+  height: 100%;
+}
+
+/* ............................................................... */
+/* ............................................................... */
+/* ............................................................... */
+#retrobg {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  color: #a3c;
+  background-color: #000;
+}
+
+/* ............................................................... */
+#retrobg-sky {
+  position: absolute;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  top: 0;
+  width: 100%;
+  height: 55%;
+  background: linear-gradient(#214 75%, #249);
+}
+
+/* ............................................................... */
+#retrobg-sunWrap {
+  position: relative;
+  width: 40%;
+  margin-bottom: -15%;
+}
+
+#retrobg-sun {
+  --glow-color: #d44;
+  padding-top: 100%;
+  border-radius: 50%;
+  background-image: linear-gradient(#fcdf11, #ff623f, #fe2085 50%);
+  box-shadow: 0 0 160px 80px var(--glow-color);
+  animation: 2s ease infinite alternate retrobg-sun-glow-anim;
+}
+
+.retrobg-shutdown #retrobg-sun {
+  background-image: linear-gradient(#000, #000 40%);
+  --glow-color: #000;
+}
+
+@keyframes retrobg-sun-glow-anim {
+  from {
+    box-shadow: 0 0 160px 80px var(--glow-color);
+  }
+  to {
+    box-shadow: 0 0 200px 95px var(--glow-color);
+  }
+}
+/* ............................................................... */
+#retrobg-stars {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.retrobg-star {
+  position: absolute;
+  border-radius: 50%;
+  width: 2px;
+  height: 2px;
+  background-color: #fff;
+}
+
+/* ............................................................... */
+#retrobg-mountains {
+  position: absolute;
+  width: 100%;
+  height: 30%;
+}
+
+.retrobg-mountain {
+  position: absolute;
+  width: 30%;
+  height: 100%;
+  background-image: linear-gradient(#000 70%, #111 85%, rgba(255, 255, 255, 0.0666666667));
+}
+
+#retrobg-mountains-left {
+  left: 0;
+  -webkit-clip-path: polygon(0% 100%, 0% 55%, 5% 60%, 10% 55%, 20% 50%, 25% 42%, 30% 38%, 33% 35%, 40% 45%, 50% 50%, 60% 70%, 70% 85%, 75% 82%, 80% 91%, 85% 90%, 90% 95%, 95% 98%, 100% 100%);
+          clip-path: polygon(0% 100%, 0% 55%, 5% 60%, 10% 55%, 20% 50%, 25% 42%, 30% 38%, 33% 35%, 40% 45%, 50% 50%, 60% 70%, 70% 85%, 75% 82%, 80% 91%, 85% 90%, 90% 95%, 95% 98%, 100% 100%);
+}
+
+#retrobg-mountains-right {
+  right: 0;
+  -webkit-clip-path: polygon(0% 100%, 5% 95%, 10% 85%, 15% 87%, 20% 80%, 25% 78%, 30% 65%, 40% 70%, 50% 57%, 60% 53%, 67% 68%, 70% 70%, 75% 66%, 80% 55%, 90% 50%, 95% 60%, 100% 57%, 100% 100%);
+          clip-path: polygon(0% 100%, 5% 95%, 10% 85%, 15% 87%, 20% 80%, 25% 78%, 30% 65%, 40% 70%, 50% 57%, 60% 53%, 67% 68%, 70% 70%, 75% 66%, 80% 55%, 90% 50%, 95% 60%, 100% 57%, 100% 100%);
+}
+
+/* ............................................................... */
+#retrobg-cityWrap {
+  position: absolute;
+  width: 50%;
+  margin-left: -1%;
+}
+
+#retrobg-city {
+  padding-top: 20%;
+}
+
+.retrobg-building {
+  position: absolute;
+  width: 5%;
+  height: 100%;
+  bottom: 0;
+  border-radius: 4px 4px 0 0;
+  background-image: linear-gradient(0deg, rgba(17, 17, 34, 0), #112 30px, #000);
+}
+
+.retrobg-building:nth-child(odd) {
+  background-image: linear-gradient(0deg, rgba(24, 24, 42, 0), #223 30px, #000);
+}
+
+.retrobg-antenna::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  margin-left: calc(-1px - 5%);
+  bottom: 100%;
+  width: 10%;
+  min-width: 2px;
+  height: 33%;
+  background-color: #000;
+}
+
+/* ............................................................... */
+#retrobg-ground {
+  position: absolute;
+  overflow: hidden;
+  width: 100%;
+  height: 45%;
+  bottom: 0;
+  border-top: 2px solid #bf578c;
+  background-color: #000;
+}
+
+.retrobg-shutdown #retrobg-ground {
+  border-color: #000;
+}
+
+#retrobg-groundShadow {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(#000 0%, transparent);
+}
+
+/* ............................................................... */
+#retrobg-linesWrap {
+  height: 100%;
+  perspective: 1000px;
+  perspective-origin: center top;
+}
+
+#retrobg-lines {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-origin: top center;
+  animation: 0.35s linear infinite retrobg-lines-anim;
+}
+
+.retrobg-shutdown #retrobg-lines {
+  animation-duration: 5s;
+}
+
+@keyframes retrobg-lines-anim {
+  from {
+    transform: rotateX(84deg) translateY(0);
+  }
+  to {
+    transform: rotateX(84deg) translateY(100px);
+  }
+}
+#retrobg-hlines,
+#retrobg-vlines {
+  position: absolute;
+  left: -400%;
+  width: 900%;
+  height: 500%;
+}
+
+#retrobg-vlines {
+  display: flex;
+  justify-content: center;
+}
+
+.retrobg-hline,
+.retrobg-vline {
+  width: 100%;
+  height: 100%;
+  background-color: currentColor;
+}
+
+.retrobg-hline {
+  height: 3px;
+}
+
+.retrobg-vline {
+  width: 3px;
+}
+
+.retrobg-hline + .retrobg-hline {
+  margin-top: 98px;
+}
+
+.retrobg-vline + .retrobg-vline {
+  margin-left: 48px;
+}/*# sourceMappingURL=style.css.map */
+
+
+
+
+/* button */
+#reset {
+ border: none;
+  cursor: pointer;
+
+  outline: none;
+  overflow: hidden;
+  position: relative;
+  color: #fff;
+  background-color: #222;
+  margin: 0 auto;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.20);
+}
+
+#reset span {
+  position: relative; 
+  z-index: 1;
+}
+
+#reset:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 350%;
+  width: 200%;
+  background: #a3c;
+  -webkit-transition: all .5s ease-in-out;
+  transition: all .5s ease-in-out;
+  -webkit-transform: translateX(-98%) translateY(-25%) rotate(45deg);
+  transform: translateX(-98%) translateY(-25%) rotate(45deg);
+}
+
+#reset:hover:after {
+  -webkit-transform: translateX(-9%) translateY(-25%) rotate(45deg);
+  transform: translateX(-9%) translateY(-25%) rotate(45deg);
+}
+
+    </style>
+  </head>
+
+  <body>
+
+
+    <div id="retrobg">
+        <div id="retrobg-sky">
+          <div id="retrobg-stars">
+            <div class="retrobg-star" style="left:  5%; top: 55%; transform: scale( 2 );"></div>
+            <div class="retrobg-star" style="left:  7%; top:  5%; transform: scale( 2 );"></div>
+            <div class="retrobg-star" style="left: 10%; top: 45%; transform: scale( 1 );"></div>
+            <div class="retrobg-star" style="left: 12%; top: 35%; transform: scale( 1 );"></div>
+            <div class="retrobg-star" style="left: 15%; top: 39%; transform: scale( 1 );"></div>
+            <div class="retrobg-star" style="left: 20%; top: 10%; transform: scale( 1 );"></div>
+            <div class="retrobg-star" style="left: 35%; top: 50%; transform: scale( 2 );"></div>
+            <div class="retrobg-star" style="left: 40%; top: 16%; transform: scale( 2 );"></div>
+            <div class="retrobg-star" style="left: 43%; top: 28%; transform: scale( 1 );"></div>
+            <div class="retrobg-star" style="left: 45%; top: 30%; transform: scale( 3 );"></div>
+            <div class="retrobg-star" style="left: 55%; top: 18%; transform: scale( 1 );"></div>
+            <div class="retrobg-star" style="left: 60%; top: 23%; transform: scale( 1 );"></div>
+            <div class="retrobg-star" style="left: 62%; top: 44%; transform: scale( 2 );"></div>
+            <div class="retrobg-star" style="left: 67%; top: 27%; transform: scale( 1 );"></div>
+            <div class="retrobg-star" style="left: 75%; top: 10%; transform: scale( 2 );"></div>
+            <div class="retrobg-star" style="left: 80%; top: 25%; transform: scale( 1 );"></div>
+            <div class="retrobg-star" style="left: 83%; top: 57%; transform: scale( 1 );"></div>
+            <div class="retrobg-star" style="left: 90%; top: 29%; transform: scale( 2 );"></div>
+            <div class="retrobg-star" style="left: 95%; top:  5%; transform: scale( 1 );"></div>
+            <div class="retrobg-star" style="left: 96%; top: 72%; transform: scale( 1 );"></div>
+            <div class="retrobg-star" style="left: 98%; top: 70%; transform: scale( 3 );"></div>
+          </div>
+          <div id="retrobg-sunWrap">
+            <div id="retrobg-sun"></div>
+          </div>
+          <div id="retrobg-mountains">
+            <div id="retrobg-mountains-left" class="retrobg-mountain"></div>
+            <div id="retrobg-mountains-right" class="retrobg-mountain"></div>
+          </div>
+          <div id="retrobg-cityWrap">
+            <div id="retrobg-city">
+              <div style="left:  4.0%; height: 20%; width: 3.0%;" class="retrobg-building"></div>
+              <div style="left:  6.0%; height: 50%; width: 1.5%;" class="retrobg-building"></div>
+              <div style="left:  8.0%; height: 25%; width: 4.0%;" class="retrobg-building"></div>
+              <div style="left: 12.0%; height: 30%; width: 3.0%;" class="retrobg-building"></div>
+              <div style="left: 13.0%; height: 55%; width: 3.0%;" class="retrobg-building retrobg-antenna"></div>
+              <div style="left: 17.0%; height: 20%; width: 4.0%;" class="retrobg-building"></div>
+              <div style="left: 18.5%; height: 70%; width: 1.5%;" class="retrobg-building"></div>
+              <div style="left: 20.0%; height: 30%; width: 4.0%;" class="retrobg-building"></div>
+              <div style="left: 21.5%; height: 80%; width: 2.0%;" class="retrobg-building retrobg-antenna"></div>
+              <div style="left: 25.0%; height: 60%; width: 4.0%;" class="retrobg-building"></div>
+              <div style="left: 28.0%; height: 40%; width: 4.0%;" class="retrobg-building"></div>
+              <div style="left: 30.0%; height: 70%; width: 4.0%;" class="retrobg-building"></div>
+              <div style="left: 35.0%; height: 65%; width: 4.0%;" class="retrobg-building retrobg-antenna"></div>
+              <div style="left: 38.0%; height: 40%; width: 3.0%;" class="retrobg-building"></div>
+              <div style="left: 42.0%; height: 60%; width: 2.0%;" class="retrobg-building"></div>
+              <div style="left: 43.0%; height: 85%; width: 4.0%;" class="retrobg-building retrobg-antenna"></div>
+              <div style="left: 45.0%; height: 40%; width: 3.0%;" class="retrobg-building"></div>
+              <div style="left: 48.0%; height: 25%; width: 3.0%;" class="retrobg-building"></div>
+              <div style="left: 50.0%; height: 80%; width: 4.0%;" class="retrobg-building"></div>
+              <div style="left: 52.0%; height: 32%; width: 5.0%;" class="retrobg-building"></div>
+              <div style="left: 55.0%; height: 55%; width: 3.0%;" class="retrobg-building retrobg-antenna"></div>
+              <div style="left: 58.0%; height: 45%; width: 4.0%;" class="retrobg-building"></div>
+              <div style="left: 61.0%; height: 90%; width: 4.0%;" class="retrobg-building"></div>
+              <div style="left: 66.0%; height: 99%; width: 4.0%;" class="retrobg-building retrobg-antenna"></div>
+              <div style="left: 69.0%; height: 30%; width: 4.0%;" class="retrobg-building"></div>
+              <div style="left: 73.5%; height: 90%; width: 2.0%;" class="retrobg-building"></div>
+              <div style="left: 72.0%; height: 70%; width: 4.0%;" class="retrobg-building"></div>
+              <div style="left: 75.0%; height: 60%; width: 4.0%;" class="retrobg-building"></div>
+              <div style="left: 80.0%; height: 40%; width: 4.0%;" class="retrobg-building"></div>
+              <div style="left: 83.0%; height: 70%; width: 4.0%;" class="retrobg-building retrobg-antenna"></div>
+              <div style="left: 87.0%; height: 60%; width: 3.0%;" class="retrobg-building retrobg-antenna"></div>
+              <div style="left: 93.0%; height: 50%; width: 3.0%;" class="retrobg-building"></div>
+              <div style="left: 91.0%; height: 30%; width: 4.0%;" class="retrobg-building"></div>
+              <div style="left: 94.0%; height: 20%; width: 3.0%;" class="retrobg-building"></div>
+              <div style="left: 98.0%; height: 35%; width: 2.0%;" class="retrobg-building"></div>
+            </div>
+          </div>
+        </div>
+        <div id="retrobg-ground">
+          <div id="retrobg-linesWrap">
+            <div id="retrobg-lines">
+              <div id="retrobg-vlines">
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+                <div class="retrobg-vline"></div>
+              </div>
+              <div id="retrobg-hlines">
+                <div class="retrobg-hline"></div>
+                <div class="retrobg-hline"></div>
+                <div class="retrobg-hline"></div>
+                <div class="retrobg-hline"></div>
+                <div class="retrobg-hline"></div>
+                <div class="retrobg-hline"></div>
+                <div class="retrobg-hline"></div>
+                <div class="retrobg-hline"></div>
+              </div>
+            </div>
+          </div>
+          <div id="retrobg-groundShadow"></div>
+        </div>
+    </div>
+
+  
+    <!-- Button trigger modal -->
+    <section>
+        <button
+        type="button"
+        id="modal"
+        class="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+      >
+        Launch modal
+      </button>
+  
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-body">
+              <div class="container">
+                <div class="row">
+                  <div
+                    class="col-8 border border-3 rounded-4 shadow-lg border-white text-white p-5 mx-auto mt-5"
+                  >
+                    <form class="needs-validation" id="form" novalidate>
+                      <h1
+                        class="mb-5 text-center  border-start-0 border-end-0 border-top-0 border-4 pb-2 border-white text-white w-50 mx-auto"
+                      >
+                        Form
+                      </h1>
+                      <div class="mb-3">
+                        <label for="fname" class="form-label">First Name</label>
+                        <input
+                          type="text"
+                          class="form-control Name"
+                          id="fname"
+                          name="FirstName"
+                          required
+                        />
+                        <div class="valid-feedback">Looks good!</div>
+                        <div class="invalid-feedback">Pls enter name</div>
+                      </div>
+  
+                      <div class="mb-3">
+                        <label for="lname" class="form-label">Last Name</label>
+                        <input
+                          type="text"
+                          class="form-control Name"
+                          id="lname"
+                          name="LastName"
+                          required
+                        />
+                        <div class="valid-feedback">Looks good!</div>
+                        <div class="invalid-feedback">Pls enter name</div>
+                      </div>
+  
+                      <div class="mb-3">
+                        Gender : 
+                        <div class="row">
+                            <div class="mt-2 ms-3 col-2 form-check">
+                                <input
+                                value="Male"
+                                  class="form-check-input Gender"
+                                  type="radio"
+                                  name="flexRadioDefault"
+                                  id="flexRadioDefault1"
+                                  required
+                                />
+                                <label class="form-check-label" for="flexRadioDefault1">
+                                  Male
+                                </label>
+                              </div>
+                              <div class="col-2 form-check">
+                                <input
+                                value="Female"
+                                  class="form-check-input Gender"
+                                  type="radio"
+                                  name="flexRadioDefault"
+                                  id="flexRadioDefault2"
+                                  required
+                                />
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                  Female
+                                </label>
+                              </div>
+                              <div class="col-2 form-check">
+                                <input
+                                value="Other"
+                                  class="form-check-input Gender"
+                                  type="radio"
+                                  name="flexRadioDefault"
+                                  id="flexRadioDefault24"
+                                  required
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="flexRadioDefault24"
+                                >
+                                  Other
+                                </label>
+                              </div>
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        Language
+                        <div class="form-check">
+                          <input
+                            class="form-check-input Language"
+                            type="checkbox"
+                            value="English"
+                            id="flexCheckDefault"
+                            required
+                          />
+                          <label class="form-check-label" for="flexCheckDefault">
+                            English
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input
+                            class="form-check-input Language"
+                            type="checkbox"
+                            value="Hindi"
+                            id="flexCheckChecked"
+                            required
+                          />
+                          <label class="form-check-label" for="flexCheckChecked">
+                            Hindi
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input
+                            class="form-check-input Language"
+                            type="checkbox"
+                            value="Gujrati"
+                            id="flexCheckChecked22"
+                            required
+                          />
+                          <label
+                            class="form-check-label"
+                            for="flexCheckChecked22"
+                          >
+                            Gujrati
+                          </label>
+                        </div>
+                      </div>
+  
+                      <div class="mb-3">
+                          <label for="formFile" class="form-label"
+                            >Default file input example</label
+                          >
+                          <input
+                            class="form-control"
+                            type="date"
+                            id="date"
+                            required
+                          />
+                          <div class="valid-feedback">Looks good!</div>
+                          <div class="invalid-feedback">Pls enter name</div>
+                        </div>
+  
+                      <div class="mb-3">
+                        <label for="formFile" class="form-label"
+                          >Default file input example</label
+                        >
+                        <input
+                          class="form-control"
+                          type="file"
+                          id="imgInp"
+                          required
+                          onchange="change11()"/>
+                        <div class="valid-feedback">Looks good!</div>
+                        <div class="invalid-feedback">Pls enter name</div>
+
+                        <img src="" alt="" class="img10" style="width: 100px;">
+                      </div>
+  
+                      <div class="text-center mb-3">
+                        <button
+                          type="button"
+                          class="btn btn-primary"
+                          data-bs-dismiss="modal"
+                          onclick="show();"
+                        >
+                          Submit
+                        </button>
+                      </div>
+                    
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+  
+      <table>
+        <thead>
+            <button onclick="Reset()"
+            id="reset"
+            class="btn btn-primary m-3"><span>  Reset All</span></button>
+          <button>
+          
+          </button>
+          <tr colspan="10" style="padding: 10px; background-color: #0d6efd; font-size: 25px">
+            <th>Id</th>
+            <th>Profile</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Gender</th>
+            <th>language</th>
+            <th>Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </section>
+
+    <script>
+    //   const myModal = document.getElementById("myModal");
+    //   const myInput = document.getElementById("myInput");
+
+    //   myModal.addEventListener("shown.bs.modal", () => {
+    //     myInput.focus();
+    //   })(
+       
+        // () => {
+        //   "use strict";
+
+         
+        //   const forms = document.querySelectorAll(".needs-validation");
+
+        //   Array.from(forms).forEach((form) => {
+        //     form.addEventListener(
+        //       "submit",
+        //       (event) => {
+        //         if (!form.checkValidity()) {
+        //           event.preventDefault();
+        //           event.stopPropagation();
+        //         }
+
+        //         form.classList.add("was-validated");
+        //       },
+        //       false
+        //     );
+        //   });
+        // }
+    //   )();
+    </script>
+    <script>
+
+
+
+    //   Base 64
+      let toBase64 = file => new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = error => reject(error);
+      });
+
+
+
+
+      
+      let arr = [];
+      let count = 0;
+      let res = "";
+
+      let show =async()=> {
+        let obj = {};
+        
+
+        // first name && Last name
+        let Name = document.querySelectorAll(".Name");
+        Name.forEach((x) => {
+          obj[x.name] = x.value;
+        });
+
+
+        // id 
+        count++;
+        obj.id=count;
+
+
+        // file
+        let file = document.querySelector("#imgInp").files[0];
+        file ? obj.profile = await toBase64(file) : obj.profile = "";
+
+
+        //  gender
+       let gender =  document.querySelector(".Gender:checked");
+       obj.gender = gender?.value || "";
+
+
+       // language
+        let language1 = [];
+       document.querySelectorAll(".Language:checked").forEach((x) => {
+              language1.push(x.value);
+        })
+
+        obj.language = language1.join(",");
+        
+ 
+        // Date
+         obj.date = document.querySelector("#date").value;
+
+
+
+         // edit raw
+         if(res){
+                let edit = arr.findIndex((x)=>x.id==res);
+                arr.splice(edit,1,obj);
+            }
+            else{
+                arr.push(obj);
+            }
+        
+        
+        document.querySelector("#form").reset();
+        document.querySelector(".img10").src="";
+        show2();
+      }
+
+
+      //   Table raw Creat function
+      let show2 = () => {
+        let code = "";
+        arr.map((x) => {
+          code += `<tr>
+            <td>${x.id}</td>
+            <td><img src="${x.profile}" alt=""  style="height: 110px; width: 100px; margin-top : 8px"></td>
+            <td>${x.FirstName}</td>
+            <td>${x.LastName}</td>
+            <td>${x.gender}</td>
+            <td>${x.language}</td>
+            <td>${x.date}</td>
+            <td class="action"><button class="btn draw-border" type="button" id="Hover" onclick="Delete1(${x.id})">Delete</button>
+                <button type="button" class="btn draw-border" id="Hover" onclick="Edit(${x.id})">Edit</button>
+            </td>
+            </tr>`;
+        });
+
+
+        document.querySelector("#tbody").innerHTML = code;
+      };
+
+      const change11 = async() =>{
+        let file = document.querySelector("#imgInp").files[0];
+         let arr1 =  await toBase64(file);
+         console.log(arr1)
+          let img = document.querySelector(".img10");
+          img.src = arr1;
+         console.log(img)
+      }
+
+
+
+      // Delet Function
+      let Delete1 = (y) => {
+          if(confirm("Are you sure to delet row")){
+              let index = arr.findIndex((x) => x.id == y)
+               arr.splice(index,1);
+               show2();
+            }
+        }
+
+
+      //  Edit function
+     let Edit = (y) => {
+             res = y;
+            let count = arr.find((x)=> x.id == y);
+         
+                document.querySelector("#modal").click();
+               document.querySelectorAll(".Name").forEach((x)=> {x.name == "FirstName" ? x.value = count.FirstName : x.value = count.LastName;})
+            
+             document.querySelector(`input[value="${count.gender}"]`).checked = true;
+             
+             document.querySelectorAll('input[type=checkbox]').forEach((x)=>{x.checked = count?.language?.includes(x.value);})
+       
+             document.querySelector("#date").value = count.date;
+            
+     }
+
+
+
+     //   Reset all function
+
+      let Reset = () => {
+         if (confirm("are you sure to Delet All row")) {
+         arr = [];
+         show2();
+         }
+      }
+    </script>
+
+
+
+<script>
+    document.querySelector( "#retrobg-sun" ).onclick = () => {
+document.querySelector( "#retrobg" ).classList.toggle( "retrobg-shutdown" );
+};
+</script>
+
+<!-- <div id="bg">
+    <canvas></canvas>
+    <canvas></canvas>
+    <canvas></canvas>
+</div> -->
+
+ 
+  </body>
+</html>
